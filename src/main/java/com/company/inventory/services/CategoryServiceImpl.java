@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements ICategoryService {
 			response.setMetadata("Respuesta ok", "00", "Respuesta exitosa");
 			
 		}catch (Exception e) {
-			response.setMetadata("Respuesta no ok", "01", "Error al consultar");
+			response.setMetadata("Respuesta no ok", "-1", "Error al consultar");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			
@@ -54,7 +54,7 @@ public class CategoryServiceImpl implements ICategoryService {
 			if (category.isPresent()) {
 				list.add(category.get());
 				response.getCategoryResponse().setCategory(list);
-				response.setMetadata("Respuesta no ok", "00", "Categoria encontrada");
+				response.setMetadata("Respuesta ok", "00", "Categoria encontrada");
 			}else {
 				response.setMetadata("Respuesta no ok", "-1", "Categoria no encontrada");
 				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.NOT_FOUND);
@@ -62,6 +62,40 @@ public class CategoryServiceImpl implements ICategoryService {
 			
 		}catch (Exception e) {
 			response.setMetadata("Respuesta no ok", "-1", "Error al consultar por id");
+			e.getStackTrace();
+			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			
+		}
+		return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+	}
+
+	/**
+	 * Post
+	 */
+	@Override
+	@Transactional
+	public ResponseEntity<CategoryResponseRest> Save(Category category) {
+		
+		CategoryResponseRest response = new CategoryResponseRest();
+		List<Category> list = new ArrayList<>();
+		
+		try {
+			
+			Category categorySaved = categoryDao.save(category);
+			//categorySaved.setName(category.getProduct());
+			
+			if (categorySaved != null) {
+				list.add(categorySaved);
+				response.getCategoryResponse().setCategory(list);
+				response.setMetadata("Respuesta ok", "00", "Categoria guardada");
+			}else {
+				response.setMetadata("Respuesta no ok", "-1", "Categoria no guardada");
+				return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);	
+			}
+			
+		}catch (Exception e) {
+			
+			response.setMetadata("Respuesta no ok", "-1", "Error al grabar por categoria");
 			e.getStackTrace();
 			return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			

@@ -22,8 +22,12 @@ public class Category implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
-	private String name;
+	private String product;
 	private String description;
+	
+	public void setName(String name2) {
+		product = name2;
+	}
 	
 
 }
