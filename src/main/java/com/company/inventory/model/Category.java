@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+/**
+ * @param description
+ */
 @Data
 @Entity
 @Table(name="category")
@@ -22,12 +25,13 @@ public class Category implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long id;
-	private String product;
+	private String name;
 	private String description;
 	
-	public void setName(String name2) {
-		product = name2;
-	}
+	
+	
+
+
 	
 
 }
